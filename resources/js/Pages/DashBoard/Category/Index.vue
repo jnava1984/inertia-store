@@ -14,12 +14,11 @@
 
 <template>
     <AppLayout title="Category">
-
-      
       <!-- m-auto -->
       <div class="container">
         <div class="card">
           <div class="card-body">
+             
                <Link class="link-button-default my-3" :href="route('category.create')">Create</Link>
               <table class="w-full border">
               <thead class="bg-gray-100">
