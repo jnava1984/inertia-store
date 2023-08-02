@@ -22,7 +22,7 @@
 </script>
 
 <template>
- <AppLayout title="Create Team">
+ <AppLayout title="Create Category">
 <!-- @submit.prevent="$event => form.post(route('category.store'))" -->
     <FormSection @submitted="submit" class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
         <template #title>
@@ -34,8 +34,7 @@
         </template>
 
         <template #form >
-              <!-- <div class="mt-6 space-y-6 mx-w-xl"> -->
-                <div class="col-span-6">
+             <div class="col-span-6">
                     <InputLabel for="title" value="Title" />
                     <TextInput
                       id="title"

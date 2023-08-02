@@ -31,11 +31,11 @@
 <!-- @submit.prevent="$event => form.post(route('category.store'))" -->
     <FormSection @submitted="submit" class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
         <template #title>
-            Create Category
+            Edit Category
         </template>
 
         <template #description>
-            Create Category
+            Edit Category
         </template>
 
         <template #form >

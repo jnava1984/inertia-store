@@ -16,14 +16,14 @@ use Illuminate\Foundation\Application;
 |
 */
 
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
+Route::get('/', function () {
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
 
 Route::middleware([
     'auth:sanctum',
@@ -35,10 +35,11 @@ Route::middleware([
     })->name('dashboard');
 
     Route::resource('/category', App\Http\Controllers\Dashboard\CategoryController::class);
+    Route::resource('/post', App\Http\Controllers\Dashboard\PostController::class);
 
 });
 
 
-Route::inertia('/indexconinertia', 'DashBoard/Post/Index');
-Route::get('/', [App\Http\Controllers\Dashboard\PostController::class, 'index']);
+// Route::inertia('/indexconinertia', 'DashBoard/Post/Index');
+// Route::get('/', [App\Http\Controllers\Dashboard\PostController::class, 'index']);
 

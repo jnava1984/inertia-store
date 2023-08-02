@@ -18,12 +18,12 @@ return new class extends Migration
             $table->string('slug', '255');
             $table->string('image', '260')->nullable();
             $table->string('date')->default(Carbon::now());
-            $table->text('descripcion', '255')->nullable();
-
+            $table->text('description', '255')->nullable();
+            $table->text('text', '255')->nullable();
             $table->enum('posted', ['yes', 'not'])->nullable('not');
             $table->enum('type', ['adverd', 'post', 'course', 'movie'])->nullable('post');
 
-            $table->foreignId('Category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
