@@ -1,18 +1,36 @@
 
 <script setup>
-  import { useForm, router } from '@inertiajs/vue3'
+  import { ref, watch } from 'vue'
+  
+  import { useForm, router, usePage } from '@inertiajs/vue3'
 
   import FormSection from '@/Components/FormSection.vue';
   import InputLabel from '@/Components/InputLabel.vue';
   import InputError from '@/Components/InputError.vue';
   import TextInput from '@/Components/TextInput.vue';
   import PrimaryButton from '@/Components/PrimaryButton.vue';
+  import DangerButton from '@/Components/DangerButton.vue';
   import ActionMessage from '@/Components/ActionMessage.vue';
   import AppLayout from '@/Layouts/AppLayout.vue';
-  
+
+ 
   const props = defineProps({
-      post: Object,
-      categories: Array
+      post: {
+        type: Object,
+        default: {
+            id: '',
+            title: '',
+            slug: '',
+            date: '',
+            text: '',
+            description: '',
+            posted: '',
+            type: '',
+            category_id: '',
+            image: ''
+        },
+    },
+    categories: Array,
   });
     
   const form = useForm({
@@ -25,21 +43,50 @@
     posted: props.post.posted,
     type: props.post.type,
     category_id: props.post.category_id,
-    image: ''
   });
-  // const formImage = useForm({
-  //   image: ''
-  // })
 
+  const dropFiles = ref([])
+ 
   function submit() {
-    form.put(route('post.update', form.id))
+    if(form.id == "")
+        form.post(route('post.store'))
+    else {
+      //  form.put(route('post.update', form.id))
+         router.post(route("post.update", form.id), {
+              _method: "put",
+              title: form.title,
+              slug: form.slug,
+              date: form.date,
+              text: form.text,
+              description: form.description,
+              posted: form.posted,
+              type: form.type,
+              category_id: form.category_id,
+              image: form.image,
+         })
+      }
   }
 
-  function upload() {
-    form.post(route('post.upload', form.id))
-  }
-  
+  watch(() => [...dropFiles.value], (currentValue, oldValue) => {
+       router.post(route('post.upload', props.post.id), {
+      'image': currentValue[currentValue.length - 1],
+      // 'image': currentValue,
+      })        
+    }
+  );
 
+  // watch(() => dropFiles, (currentValue, oldValue) => {
+  //   console.log(currentValue)
+  //      router.post(route('post.upload', props.post.id), {
+  //     'image': currentValue[currentValue.length - 1],
+  //     // 'image': currentValue,
+  //     })        
+  //   }, { deep: true}
+  // );
+
+  const click = () => {
+     alert(dropFiles.value); 
+  }
 </script>
 
 <template>
@@ -52,33 +99,33 @@
         <template #description>
             Edit Post
         </template>
-
+        
         <template #form >
-                <div class="col-span-6">
-                    <InputLabel for="title" value="Title" />
-                    <TextInput
-                      id="title"
-                      ref="titleInput"
-                      v-model="form.title"
-                      type="text"
-                      class="mt-1 block w-full"
-                      autocomplete="Title"
-                    />
-                    <InputError :message="form.errors.title" class="mt-2"></InputError>
-                  </div>
-                   <div class="col-span-6">
-                    <InputLabel for="slug" value="Slug" />
-                    <TextInput
-                      id="slug"
-                      ref="slugInput"
-                      v-model="form.slug"
-                      type="text"
-                      class="mt-1 block w-full"
-                      autocomplete="Slug"
-                    />
-                    <InputError :message="form.errors.slug" class="mt-2"></InputError>
-                   </div>
-                       <div class="col-span-6">
+          <div class="col-span-6">
+              <InputLabel for="title" value="Title" />
+              <TextInput
+                id="title"
+                ref="titleInput"
+                v-model="form.title"
+                type="text"
+                class="mt-1 block w-full"
+                autocomplete="Title"
+              />
+              <InputError :message="form.errors.title" class="mt-2"></InputError>
+            </div>
+            <div class="col-span-6">
+              <InputLabel for="slug" value="Slug" />
+              <TextInput
+                id="slug"
+                ref="slugInput"
+                v-model="form.slug"
+                type="text"
+                class="mt-1 block w-full"
+                autocomplete="Slug"
+              />
+              <InputError :message="form.errors.slug" class="mt-2"></InputError>
+            </div>
+            <div class="col-span-6">
                 <InputLabel for="date" value="date" />
                 <TextInput
                   id="date"
@@ -133,7 +180,6 @@
                 </select> 
               <InputError :message="form.errors.type" class="mt-2"></InputError>
             </div>
-
             <div class="col-span-6">
               <!-- <InputLabel for="category_id" value="Category" />
                 <select  class="rounded-md border-gray-400 w-full mt-1 block" v-model="form.category_id" id="category_id" >
@@ -153,9 +199,54 @@
                 </select> 
               <InputError :message="form.errors.category_id" class="mt-2"></InputError>
             </div>
+             <div class="col-span-4">
+                <InputLabel for="Image" value="Image" />
+                  <TextInput
+                    type="file"
+                      @input="form.image = $event.target.files[0]"
+                      class="mt-1 w-full"
+                  />
+                  <InputError :message="form.errors.image" class="mt-2"></InputError>
+            </div>
+            <div class="col-span-4">
+                <o-upload v-model="form.image">
+                  <o-button tag="a" variant="primary">
+                    <o-icon icon="upload"></o-icon>
+                    <span>Click to upload</span>
+                  </o-button>
+                </o-upload>
+            </div>
+
+            <div class="col-span-6" v-if="post.id">
+              <!-- multiple -->
+              <o-upload v-model="dropFiles" multiple drag-drop>
+                  <section class="ex-center">
+                    <p>
+                      <o-icon icon="upload" size="is-large">
+                      </o-icon>
+                    </p>
+                    <p>Drop your files here or click to upload</p>
+                  </section>
+                </o-upload>
+            </div>
+
+      <!-- <div class="col-span-6" v-if="post.image">
+        <span v-for="(file, index) in post.image" :key="index">
+          {{ file.name }}
+          <o-button icon-left="times" size="small" native-type="button" @click="deleteDropFile(index)">
+          </o-button>
+        </span>
+      </div> -->
+    
+          <div class="col-span-6" v-if="post.id">
+            <button @click="click()">
+                test
+            </button>
+          </div>
+        
+
         </template>
 
-  
         <template #actions>
             <!-- <ActionMessage :on="form.recentlySuccessful" class="mr-3">
                 Saved.
@@ -165,32 +256,18 @@
                   Save
                </PrimaryButton>
         </template>
-
     </FormSection>
 
-       <div class="container">
-          <div class="card">
-            <div class="card-body">
-              <div class="grid grid-cols-2 gap-2">
-                <div>
-                  <InputLabel for="Image" value="Image" />
-                  <TextInput
-                    type="file"
-                      @input="form.image = $event.target.files[0]"
-                      class="mt-1 w-full"
-                  />
-                  <InputError :message="form.errors.image" class="mt-2"></InputError>
-                  <!-- :class="{ 'opacity-25': form.processing }" :disabled="form.processing" -->
-                </div>
-                <div>
-                  <PrimaryButton @click="upload">
-                    Send
-                  </PrimaryButton>
-                </div>
-              </div>
-            </div>
-          </div>
+
+    <div class="container">
+      <div class="card" v-if="post.image">
+        <div class="card-body">
+         <img class="max-w-xs rounded-md shadoe-sm" :src="'/image/post/' + post.image" alt="">
+         <DangerButton class="mt-4" @click="router.post(route('post.image-delete', form.id))">Delete</DangerButton>
+         
         </div>
+      </div>
+    </div>
 </AppLayout>
         
 </template>

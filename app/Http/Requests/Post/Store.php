@@ -23,7 +23,7 @@ class Store extends FormRequest
     {
         return [
             "title" => 'required|min:5|max:255',
-            "slug" => 'required|min:5|max:255|unique:categories',
+            "slug" => 'required|min:5|max:255|unique:posts',
             "date" => 'required',
             "text" => 'required',
             "description" => 'required',

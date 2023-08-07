@@ -23,7 +23,7 @@ class Put extends FormRequest
     {
         return [
             "title" => "required|min:5|max:255",
-            "slug" => "required|min:5|max:255|unique:post,slug," . $this->route("post")->id,
+            "slug" => "required|min:5|max:255|unique:posts,slug," . $this->route("post")->id,
             "date" => 'required',
             "text" => 'required',
             "description" => 'required',
