@@ -13,6 +13,7 @@ import '@oruga-ui/oruga-next/dist/oruga-full.css'
 //@font @mdi/font      AMterial designe  
 import '@mdi/font/css/materialdesignicons.min.css'
 
+import CKEditor from '@ckeditor/ckeditor5-vue';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -24,6 +25,7 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .use(Oruga)
+            .use(CKEditor)
             .mount(el);
     },
     progress: {

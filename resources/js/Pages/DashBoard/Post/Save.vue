@@ -13,7 +13,8 @@
   import ActionMessage from '@/Components/ActionMessage.vue';
   import AppLayout from '@/Layouts/AppLayout.vue';
 
- 
+  import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
   const props = defineProps({
       post: {
         type: Object,
@@ -46,6 +47,9 @@
   });
 
   const dropFiles = ref([])
+
+  const editor = ClassicEditor
+  // const ckeditor = CKEditor.component
  
   function submit() {
     if(form.id == "")
@@ -139,14 +143,16 @@
             </div>
             <div class="col-span-6">
                 <InputLabel for="text" value="Text" />
-                <textarea
+                <!-- <textarea
                   id="text"
                   ref="textInput"
                   v-model="form.text" 
                   type="text"
                   class="rounded-md border-gray-400 w-full mt-1 block "
                   autocomplete="text">
-                </textarea>
+                </textarea> -->
+                <!-- :config="editorConfig" -->
+                <ckeditor :editor="editor" v-model="form.text" ></ckeditor>
                 <InputError :message="form.errors.text" class="mt-2"></InputError>
             </div>
             <div class="col-span-6">
