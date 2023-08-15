@@ -10,6 +10,7 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import Oruga from '@oruga-ui/oruga-next'
 // import '@oruga-ui/oruga-next/dist/oruga.css'
 import '@oruga-ui/oruga-next/dist/oruga-full.css'
+import '@oruga-ui/oruga-next/dist/oruga-full-vars.css'
 //@font @mdi/font      AMterial designe  
 import '@mdi/font/css/materialdesignicons.min.css'
 

@@ -26,3 +26,10 @@
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0
 }
+
+/* ORUGA */
+:root {
+    /* --oruga-modal-content-padding: 50px; */
+}
+
+/* ORUGA */
